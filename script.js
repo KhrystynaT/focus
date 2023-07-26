@@ -156,27 +156,85 @@ const scheduleData = {
     "Evening: Python Course 1, Final Review and Summary (1 hour)",
   ],
 };
+// Function to group days into weeks
+const groupDaysIntoWeeks = (scheduleData) => {
+  const weeks = [];
+  let currentWeek = [];
+  Object.keys(scheduleData).forEach((day, index) => {
+    currentWeek.push({ day, activities: scheduleData[day] });
+    if (
+      currentWeek.length === 7 ||
+      index === Object.keys(scheduleData).length - 1
+    ) {
+      weeks.push(currentWeek);
+      currentWeek = [];
+    }
+  });
+  return weeks;
+};
 
 // Function to display the schedule
 function displaySchedule() {
   const main = document.querySelector("main");
-  let scheduleHTML = "";
+  const sliderContainer = main.querySelector(".slider-container");
+  const sliderDots = main.querySelector(".slider-dots");
 
-  for (const day in scheduleData) {
-    scheduleHTML += `
-            <div class="day">
-                <h2>${day}</h2>
-                <ul>
-                    ${scheduleData[day]
-                      .map((activity) => `<li>${activity}</li>`)
-                      .join("")}
-                </ul>
-            </div>
+  const weeks = groupDaysIntoWeeks(scheduleData);
+  let currentWeekIndex = 0;
+
+  function createDayCard(day, activities) {
+    const dayCard = document.createElement("div");
+    dayCard.classList.add("day-card");
+    dayCard.innerHTML = `
+          <h2>${day}</h2>
+          <ul>
+            ${activities.map((activity) => `<li>${activity}</li>`).join("")}
+          </ul>
         `;
+    return dayCard;
   }
 
-  main.innerHTML = scheduleHTML;
+  function showCurrentWeek() {
+    const currentWeek = weeks[currentWeekIndex];
+    sliderContainer.innerHTML = "";
+    currentWeek.forEach((day) => {
+      const dayCard = createDayCard(day.day, day.activities);
+      sliderContainer.appendChild(dayCard);
+    });
+  }
+
+  function updateSliderDots() {
+    sliderDots.innerHTML = "";
+    weeks.forEach((week, index) => {
+      const dot = document.createElement("div");
+      dot.classList.add("dot");
+      if (index === currentWeekIndex) {
+        dot.classList.add("active");
+      }
+      dot.addEventListener("click", () => {
+        currentWeekIndex = index;
+        showCurrentWeek();
+        updateSliderDots();
+      });
+      sliderDots.appendChild(dot);
+    });
+  }
+
+  // Display the initial week and slider dots
+  showCurrentWeek();
+  updateSliderDots();
+
+  // Handle Next button click
+  const nextBtn = main.querySelector(".next-btn");
+  nextBtn.addEventListener("click", () => {
+    currentWeekIndex++;
+    if (currentWeekIndex >= weeks.length) {
+      currentWeekIndex = 0;
+    }
+    showCurrentWeek();
+    updateSliderDots();
+  });
 }
 
 // Call the displaySchedule function when the page loads
-window.addEventListener("load", displaySchedule);
+displaySchedule();
