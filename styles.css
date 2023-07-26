@@ -1,8 +1,10 @@
 body {
-  font-family: Arial, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   line-height: 1.6;
   margin: 0;
   padding: 0;
+  background-color: #1a1a1a;
+  color: #fff;
 }
 
 header {
@@ -12,8 +14,48 @@ header {
   padding: 1rem;
 }
 
+header h1 {
+  font-size: 2.5rem;
+  margin: 0;
+}
+
 main {
-  max-width: 800px;
-  margin: 0 auto;
+  display: grid;
+  grid-gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+.day {
+  background-color: #333;
+  border-radius: 8px;
   padding: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-top: 1rem;
+}
+
+.day h2 {
+  font-size: 1.5rem;
+  margin: 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #ccc;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  margin-bottom: 0.5rem;
+}
+
+/* Style the links in the schedule */
+a {
+  color: #fff;
+  text-decoration: none;
+  border-bottom: 1px dashed #fff;
+}
+
+a:hover {
+  border-bottom: 1px solid #fff;
 }
