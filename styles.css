@@ -9,7 +9,7 @@ body {
 
 header {
   background-color: #1a5f0a92;
-  color: #153717;
+  color: #cacaca;
   text-align: center;
   padding: 1rem 0;
   border: #1d3211 1px solid;
@@ -20,6 +20,7 @@ main {
   flex-direction: column;
   align-items: center;
   margin: 1rem; /* Reduce margin for better mobile view */
+  padding-bottom: 60px;
 }
 
 .slider-container {
@@ -80,4 +81,27 @@ main {
 
 .dot.active {
   background-color: #333;
+}
+/* Styling for the footer */
+footer {
+  background-color: #1a5f0a92;
+  color: #153717;
+  text-align: center;
+  padding: 1rem 0;
+  border-top: #1d3211 1px solid;
+
+  width: 100%;
+}
+
+footer p {
+  margin: 0;
+}
+
+footer a {
+  color: #d6cdb9;
+  text-decoration: none;
+}
+
+footer a:hover {
+  color: red;
 }
