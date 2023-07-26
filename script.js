@@ -156,22 +156,36 @@ const scheduleData = {
     "Evening: Python Course 1, Final Review and Summary (1 hour)",
   ],
 };
-// Function to group days into weeks
-const groupDaysIntoWeeks = (scheduleData) => {
-  const weeks = [];
-  let currentWeek = [];
+
+// Function to group days into sets of 6
+function groupDaysIntoSets(scheduleData) {
+  const sets = [];
+  let currentSet = [];
   Object.keys(scheduleData).forEach((day, index) => {
-    currentWeek.push({ day, activities: scheduleData[day] });
+    currentSet.push({ day, activities: scheduleData[day] });
     if (
-      currentWeek.length === 7 ||
+      currentSet.length === 6 ||
       index === Object.keys(scheduleData).length - 1
     ) {
-      weeks.push(currentWeek);
-      currentWeek = [];
+      sets.push(currentSet);
+      currentSet = [];
     }
   });
-  return weeks;
-};
+  return sets;
+}
+
+// Function to create a day card
+function createDayCard(day, activities) {
+  const dayCard = document.createElement("div");
+  dayCard.classList.add("day-card");
+  dayCard.innerHTML = `
+      <h2>${day}</h2>
+      <ul>
+        ${activities.map((activity) => `<li>${activity}</li>`).join("")}
+      </ul>
+    `;
+  return dayCard;
+}
 
 // Function to display the schedule
 function displaySchedule() {
@@ -179,25 +193,13 @@ function displaySchedule() {
   const sliderContainer = main.querySelector(".slider-container");
   const sliderDots = main.querySelector(".slider-dots");
 
-  const weeks = groupDaysIntoWeeks(scheduleData);
-  let currentWeekIndex = 0;
+  const sets = groupDaysIntoSets(scheduleData);
+  let currentSetIndex = 0;
 
-  function createDayCard(day, activities) {
-    const dayCard = document.createElement("div");
-    dayCard.classList.add("day-card");
-    dayCard.innerHTML = `
-          <h2>${day}</h2>
-          <ul>
-            ${activities.map((activity) => `<li>${activity}</li>`).join("")}
-          </ul>
-        `;
-    return dayCard;
-  }
-
-  function showCurrentWeek() {
-    const currentWeek = weeks[currentWeekIndex];
+  function showCurrentSet() {
+    const currentSet = sets[currentSetIndex];
     sliderContainer.innerHTML = "";
-    currentWeek.forEach((day) => {
+    currentSet.forEach((day) => {
       const dayCard = createDayCard(day.day, day.activities);
       sliderContainer.appendChild(dayCard);
     });
@@ -205,35 +207,24 @@ function displaySchedule() {
 
   function updateSliderDots() {
     sliderDots.innerHTML = "";
-    weeks.forEach((week, index) => {
+    sets.forEach((set, index) => {
       const dot = document.createElement("div");
       dot.classList.add("dot");
-      if (index === currentWeekIndex) {
+      if (index === currentSetIndex) {
         dot.classList.add("active");
       }
       dot.addEventListener("click", () => {
-        currentWeekIndex = index;
-        showCurrentWeek();
+        currentSetIndex = index;
+        showCurrentSet();
         updateSliderDots();
       });
       sliderDots.appendChild(dot);
     });
   }
 
-  // Display the initial week and slider dots
-  showCurrentWeek();
+  // Display the initial set and slider dots
+  showCurrentSet();
   updateSliderDots();
-
-  // Handle Next button click
-  const nextBtn = main.querySelector(".next-btn");
-  nextBtn.addEventListener("click", () => {
-    currentWeekIndex++;
-    if (currentWeekIndex >= weeks.length) {
-      currentWeekIndex = 0;
-    }
-    showCurrentWeek();
-    updateSliderDots();
-  });
 }
 
 // Call the displaySchedule function when the page loads
