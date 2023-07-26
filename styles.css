@@ -4,13 +4,15 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
+  background-color: rgb(210, 210, 176);
 }
 
 header {
-  background-color: #333;
-  color: #fff;
+  background-color: #1a5f0a92;
+  color: #153717;
   text-align: center;
   padding: 1rem 0;
+  border: #1d3211 1px solid;
 }
 
 main {
@@ -30,12 +32,22 @@ main {
 
 /* Show 3 cards in a row on large screens */
 .day-card {
-  border: 1px solid #ccc;
+  background: #a7cc96;
+  border: 1px solid #477d2a;
   padding: 0.5rem;
   width: calc(33.33% - (2 * 1rem)); /* Show 3 cards in a row on large screens */
   min-width: 300px; /* Set a minimum width for the cards */
 }
-
+.day-card h2 {
+  text-align: center;
+  color: #153717;
+}
+.day-card ul {
+  list-style: none;
+}
+.day-card ul li {
+  padding: 5px;
+}
 /* Show 2 cards in a row on medium screens */
 @media screen and (max-width: 768px) {
   .day-card {
